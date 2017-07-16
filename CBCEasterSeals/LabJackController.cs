@@ -45,7 +45,7 @@ namespace CBCEasterSeals
             }
             catch
             {
-                MessageBox.Show("LabJack error, please check connections.");
+                MessageBox.Show("LabJack error. Cannot connect to LabJack. Please check connections.");
                 Environment.Exit(-1);
             }
         }

@@ -23,9 +23,6 @@
  * Any distribution of this code (whole or partial) must be accompanied by this notice.
  */
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace CBCEasterSeals
 {
@@ -60,9 +57,9 @@ namespace CBCEasterSeals
             }
         }
 
-        public void stats_refresh()
+        public void StatsRefresh()
         {
-            int h = getHalfHour();
+            int h = GetHalfHour();
             for (int i = 0; i <= 29; i++)
             {
                 if (Program.MasterPhones[i] == true) //Phone in use
@@ -92,11 +89,11 @@ namespace CBCEasterSeals
                 }
             }
 
-            callsMin[h] = (calls[h] / (float)getMinFromHalfHour());
-            callsMin[11] = (calls[11] / (float)getMinFromHalfHour());
+            callsMin[h] = (calls[h] / (float)GetMinFromHalfHour());
+            callsMin[11] = (calls[11] / (float)GetMinFromHalfHour());
         }
 
-        private int getHalfHour() //returns current half hour of show based on system clock
+        private int GetHalfHour() //returns current half hour of show based on system clock
         {
             int hour = Convert.ToInt32(DateTime.Now.ToString("HH"));
             int min = Convert.ToInt32(DateTime.Now.ToString("mm"));
@@ -163,7 +160,7 @@ namespace CBCEasterSeals
             return 10;
         }
 
-        private int getMinFromHalfHour() //returns number of minutes since start of last half hour
+        private int GetMinFromHalfHour() //returns number of minutes since start of last half hour
         {
             int min = Convert.ToInt32(DateTime.Now.ToString("mm"));
             if (min > 30)

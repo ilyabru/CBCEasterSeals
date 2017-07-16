@@ -23,12 +23,7 @@
  * Any distribution of this code (whole or partial) must be accompanied by this notice.
  */
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using System.IO;
 
@@ -40,7 +35,7 @@ namespace CBCEasterSeals
         private static int ImgIndex = 0;
         private static DirectoryInfo ImgDir;
         private static FileInfo[] ImgInfo;
-        private static Image[] SponsorImages = { global::CBCEasterSeals.Properties.Resources.es_logo };
+        private static Image[] SponsorImages = { Properties.Resources.es_logo };
         private static Image[] SponsorImagesTmp1;
         private static Image[] SponsorImagesTmp2;
         public Image CmdCurrSponsor
@@ -52,30 +47,32 @@ namespace CBCEasterSeals
         {
             InitializeComponent();
             InitializeControlGrid();
-            load_imgs();
-            pbCurrSponsor.Image = Canvas.sponsor;
+            LoadImgs();
+            pbCurrSponsor.Image = Canvas.Sponsor;
         }
 
         private void InitializeControlGrid()
         {
-            this.ShapeContainer = new Microsoft.VisualBasic.PowerPacks.ShapeContainer();
-            this.Controls.Add(this.ShapeContainer);
-            this.lblGrid = new System.Windows.Forms.Label[30];
+            ShapeContainer = new Microsoft.VisualBasic.PowerPacks.ShapeContainer();
+            Controls.Add(ShapeContainer);
+            lblGrid = new Label[30];
             for(int i = 0; i <= 29; i++)
             {
                 //Labels
-                this.lblGrid[i] = new System.Windows.Forms.Label();
-                this.lblGrid[i].Location = new System.Drawing.Point((15+(i*30)), 474);
-                this.lblGrid[i].Size = new System.Drawing.Size(25, 20);
-                this.lblGrid[i].Text = (i + 1).ToString();
-                this.lblGrid[i].BackColor = System.Drawing.Color.LightGreen;
-                this.lblGrid[i].TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+                lblGrid[i] = new Label()
+                {
+                    Location = new Point((15 + (i * 30)), 474),
+                    Size = new Size(25, 20),
+                    Text = (i + 1).ToString(),
+                    BackColor = Color.LightGreen,
+                    TextAlign = ContentAlignment.MiddleCenter
+                };
             }
 
-            this.Controls.AddRange(lblGrid);
+            Controls.AddRange(lblGrid);
 
-            this.ShapeContainer.Location = new System.Drawing.Point(0, 0);
-            this.ShapeContainer.Size = this.ClientSize;
+            ShapeContainer.Location = new Point(0, 0);
+            ShapeContainer.Size = ClientSize;
         }
 
         public void CtrlRefresh() //refreshes line indicators
@@ -84,17 +81,17 @@ namespace CBCEasterSeals
             {
                 if (Program.MasterPhones[i] == true)
                 {
-                    this.lblGrid[i].BackColor = System.Drawing.Color.Green;
+                    lblGrid[i].BackColor = Color.Green;
                 }
                 else
                 {
-                    this.lblGrid[i].BackColor = System.Drawing.Color.LightGreen;
+                    lblGrid[i].BackColor = Color.LightGreen;
                 }
             }
-            this.CmdCurrSponsor = Canvas.sponsor;
+            CmdCurrSponsor = Canvas.Sponsor;
         }
 
-        private void btnExit_Click(object sender, EventArgs e)
+        private void BtnExit_Click(object sender, EventArgs e)
         {
             if(MessageBox.Show("Do you really want to quit?","Quit",MessageBoxButtons.YesNo,MessageBoxIcon.Question) == DialogResult.Yes)
             {
@@ -103,33 +100,33 @@ namespace CBCEasterSeals
             }
         }
 
-        private void btnSetDefaultImg_Click(object sender, EventArgs e)
+        private void BtnSetDefaultImg_Click(object sender, EventArgs e)
         {
-            Canvas.sponsor = global::CBCEasterSeals.Properties.Resources.es_logo;
-            pbSponsor.Image = global::CBCEasterSeals.Properties.Resources.es_logo;
+            Canvas.Sponsor = Properties.Resources.es_logo;
+            pbSponsor.Image = Properties.Resources.es_logo;
             ImgIndex = 0;
         }
 
-        private void btnReloadImgs_Click(object sender, EventArgs e)
+        private void BtnReloadImgs_Click(object sender, EventArgs e)
         {
-            load_imgs();
+            LoadImgs();
         }
 
-        private void btnSetImg_Click(object sender, EventArgs e)
+        private void BtnSetImg_Click(object sender, EventArgs e)
         {
             try
             {
-                Canvas.sponsor = pbSponsor.Image;
+                Canvas.Sponsor = pbSponsor.Image;
             }
             catch
             {
-                Canvas.sponsor = global::CBCEasterSeals.Properties.Resources.es_logo;
-                pbSponsor.Image = global::CBCEasterSeals.Properties.Resources.es_logo;
-                load_imgs();
+                Canvas.Sponsor = Properties.Resources.es_logo;
+                pbSponsor.Image = Properties.Resources.es_logo;
+                LoadImgs();
             }
         }
 
-        private void btnNextImg_Click(object sender, EventArgs e)
+        private void BtnNextImg_Click(object sender, EventArgs e)
         {
             if (++ImgIndex >= SponsorImages.Length)
             {
@@ -138,7 +135,7 @@ namespace CBCEasterSeals
             pbSponsor.Image = SponsorImages[ImgIndex];
         }
 
-        private void btnPrevImg_Click(object sender, EventArgs e)
+        private void BtnPrevImg_Click(object sender, EventArgs e)
         {
             if (--ImgIndex < 0)
             {
@@ -147,7 +144,7 @@ namespace CBCEasterSeals
             pbSponsor.Image = SponsorImages[ImgIndex];
         }
 
-        private void load_imgs()
+        private void LoadImgs()
         {
             try
             {
@@ -187,8 +184,8 @@ namespace CBCEasterSeals
                 }
                 else
                 {
-                    Canvas.sponsor = global::CBCEasterSeals.Properties.Resources.es_logo;
-                    pbSponsor.Image = global::CBCEasterSeals.Properties.Resources.es_logo;
+                    Canvas.Sponsor = Properties.Resources.es_logo;
+                    pbSponsor.Image = Properties.Resources.es_logo;
                     btnNextImg.Enabled = false;
                     btnPrevImg.Enabled = false;
                     btnSetImg.Enabled = false;
@@ -196,27 +193,27 @@ namespace CBCEasterSeals
             }
             catch //disable browsing if image scan causes error
             {
-                Canvas.sponsor = global::CBCEasterSeals.Properties.Resources.es_logo;
-                pbSponsor.Image = global::CBCEasterSeals.Properties.Resources.es_logo;
+                Canvas.Sponsor = Properties.Resources.es_logo;
+                pbSponsor.Image = Properties.Resources.es_logo;
                 btnNextImg.Enabled = false;
                 btnPrevImg.Enabled = false;
                 btnSetImg.Enabled = false;
             }
         }
 
-        private void btnSH_Click(object sender, EventArgs e) //shows and hides the sponsor's logo
+        private void BtnSH_Click(object sender, EventArgs e) //shows and hides the sponsor's logo
         {
             if (btnSH.Text == "Hide Sponsor")
             {
                 btnSH.Text = "Show Sponsor";
                 pbCurrSponsor.Visible = false;
-                Canvas.showSponsor = false;
+                Canvas.ShowSponsor = false;
             }
             else
             {
                 btnSH.Text = "Hide Sponsor";
                 pbCurrSponsor.Visible = true;
-                Canvas.showSponsor = true;
+                Canvas.ShowSponsor = true;
             }
         }
 

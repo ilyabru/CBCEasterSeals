@@ -34,20 +34,20 @@ namespace CBCEasterSeals
         protected static bool CelebrateEnable = false;
 
         //Image handles
-        protected static readonly Image img_on = global::CBCEasterSeals.Properties.Resources.on;
-        protected static readonly Image img_off = global::CBCEasterSeals.Properties.Resources.off;
-        protected static readonly Image img_bg = global::CBCEasterSeals.Properties.Resources.bg;
-        protected static readonly Image img_logo = global::CBCEasterSeals.Properties.Resources.telethon_logo;
-        protected static Image img_ad = global::CBCEasterSeals.Properties.Resources.es_logo;
+        protected static readonly Image img_on = Properties.Resources.on;
+        protected static readonly Image img_off = Properties.Resources.off;
+        protected static readonly Image img_bg = Properties.Resources.bg;
+        protected static readonly Image img_logo = Properties.Resources.telethon_logo;
+        protected static Image img_ad = Properties.Resources.es_logo;
 
-        static public Image sponsor
+        static public Image Sponsor
         {
             get { return img_ad; }
             set { img_ad = value; }
         }
 
         protected static bool showsposor = true;
-        public static bool showSponsor
+        public static bool ShowSponsor
         {
             set { showsposor = value; }
         }
@@ -97,16 +97,16 @@ namespace CBCEasterSeals
         };
 
         // properties for drawing text
-        protected static readonly System.Drawing.Brush Colour = new SolidBrush(System.Drawing.Color.Yellow);
+        protected static readonly Brush Colour = new SolidBrush(Color.Yellow);
 
-        protected static readonly System.Drawing.Font RemainNumFont = new System.Drawing.Font("Trebuchet MS", 120F, System.Drawing.FontStyle.Bold);
-        protected static readonly System.Drawing.Point RemainNumLocation = new System.Drawing.Point(845, 866);
+        protected static readonly Font RemainNumFont = new Font("Trebuchet MS", 120F, FontStyle.Bold);
+        protected static readonly Point RemainNumLocation = new Point(845, 866);
 
-        protected static readonly System.Drawing.Font RemainFont = new System.Drawing.Font("Trebuchet MS", 23F, System.Drawing.FontStyle.Bold);
-        protected static readonly System.Drawing.Point RemainLocation = new System.Drawing.Point(848, 831);
+        protected static readonly Font RemainFont = new Font("Trebuchet MS", 23F, FontStyle.Bold);
+        protected static readonly Point RemainLocation = new Point(848, 831);
 
-        protected static readonly System.Drawing.Point ThanksLocation = new System.Drawing.Point(400, 470);
-        protected static readonly System.Drawing.Point CallingLocation = new System.Drawing.Point(330, 470);
+        protected static readonly Point ThanksLocation = new Point(400, 470);
+        protected static readonly Point CallingLocation = new Point(330, 470);
 
         protected static int tmr_cnt = 0;
         protected static bool celebrate_flash = true;
@@ -147,7 +147,7 @@ namespace CBCEasterSeals
                 CelebrateEnable = true;
             }
 
-            CanvasBuffer = BufferedGraphicsManager.Current.Allocate(e.Graphics, this.DisplayRectangle);
+            CanvasBuffer = BufferedGraphicsManager.Current.Allocate(e.Graphics, DisplayRectangle);
             //Configure graphics settings
             CanvasBuffer.Graphics.InterpolationMode = InterpolationMode.HighQualityBilinear;
             CanvasBuffer.Graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;

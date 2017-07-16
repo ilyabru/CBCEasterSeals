@@ -127,7 +127,7 @@ namespace CBCEasterSeals
             this.btnExit.TabIndex = 0;
             this.btnExit.Text = "Exit";
             this.btnExit.UseVisualStyleBackColor = true;
-            this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
+            this.btnExit.Click += new System.EventHandler(this.BtnExit_Click);
             // 
             // btnNextImg
             // 
@@ -139,7 +139,7 @@ namespace CBCEasterSeals
             this.btnNextImg.TabIndex = 2;
             this.btnNextImg.Text = ">>";
             this.btnNextImg.UseVisualStyleBackColor = true;
-            this.btnNextImg.Click += new System.EventHandler(this.btnNextImg_Click);
+            this.btnNextImg.Click += new System.EventHandler(this.BtnNextImg_Click);
             // 
             // btnPrevImg
             // 
@@ -151,7 +151,7 @@ namespace CBCEasterSeals
             this.btnPrevImg.TabIndex = 3;
             this.btnPrevImg.Text = "<<";
             this.btnPrevImg.UseVisualStyleBackColor = true;
-            this.btnPrevImg.Click += new System.EventHandler(this.btnPrevImg_Click);
+            this.btnPrevImg.Click += new System.EventHandler(this.BtnPrevImg_Click);
             // 
             // btnSetImg
             // 
@@ -163,7 +163,7 @@ namespace CBCEasterSeals
             this.btnSetImg.TabIndex = 4;
             this.btnSetImg.Text = "Set Sponsor";
             this.btnSetImg.UseVisualStyleBackColor = true;
-            this.btnSetImg.Click += new System.EventHandler(this.btnSetImg_Click);
+            this.btnSetImg.Click += new System.EventHandler(this.BtnSetImg_Click);
             // 
             // btnSetDefaultImg
             // 
@@ -174,7 +174,7 @@ namespace CBCEasterSeals
             this.btnSetDefaultImg.TabIndex = 5;
             this.btnSetDefaultImg.Text = "Use Easter Seals Logo";
             this.btnSetDefaultImg.UseVisualStyleBackColor = true;
-            this.btnSetDefaultImg.Click += new System.EventHandler(this.btnSetDefaultImg_Click);
+            this.btnSetDefaultImg.Click += new System.EventHandler(this.BtnSetDefaultImg_Click);
             // 
             // btnReloadImgs
             // 
@@ -185,7 +185,7 @@ namespace CBCEasterSeals
             this.btnReloadImgs.TabIndex = 7;
             this.btnReloadImgs.Text = "Reload Images";
             this.btnReloadImgs.UseVisualStyleBackColor = true;
-            this.btnReloadImgs.Click += new System.EventHandler(this.btnReloadImgs_Click);
+            this.btnReloadImgs.Click += new System.EventHandler(this.BtnReloadImgs_Click);
             // 
             // lblCurrSponsor
             // 
@@ -216,7 +216,7 @@ namespace CBCEasterSeals
             this.btnSH.TabIndex = 11;
             this.btnSH.Text = "Hide Sponsor";
             this.btnSH.UseVisualStyleBackColor = true;
-            this.btnSH.Click += new System.EventHandler(this.btnSH_Click);
+            this.btnSH.Click += new System.EventHandler(this.BtnSH_Click);
             // 
             // pbCurrSponsor
             // 
@@ -812,7 +812,6 @@ namespace CBCEasterSeals
         private System.Windows.Forms.Label lblCurrSponsor;
         private System.Windows.Forms.Label lblSponserBrowse;
         private Microsoft.VisualBasic.PowerPacks.ShapeContainer ShapeContainer;
-        //private Microsoft.VisualBasic.PowerPacks.RectangleShape[] ControlGrid;
         private System.Windows.Forms.Button btnSH;
         private System.Windows.Forms.Label lbl930;
         private System.Windows.Forms.Label lbl1400;

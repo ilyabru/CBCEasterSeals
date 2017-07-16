@@ -23,19 +23,13 @@
  * Any distribution of this code (whole or partial) must be accompanied by this notice.
  */
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace CBCEasterSeals
 {
     public partial class MainDisplay : Form //This class contains all other class objects, it contains the main refresh timer used to refresh all classes
     {
-        //private static LabJackController LJC = new LabJackController();
+        private static LabJackController LJC = new LabJackController();
         private static StatsController StatsC = new StatsController();
         private static ControlForm ctrlfrm = new ControlForm();
 
@@ -53,9 +47,9 @@ namespace CBCEasterSeals
 
         private void Tmr_Refresh_Tick(object sender, EventArgs e)   //This timer is used to refresh and sync all child classes
         {
-            //LJC.LJRefresh();                              //Refresh LJ readings
-            StatsC.stats_refresh();                       //Refresh Statistical Data
-            this.MainCanvas.Refresh();                    //Refresh MainDisplay
+            LJC.LJRefresh();                              //Refresh LJ readings
+            StatsC.StatsRefresh();                        //Refresh Statistical Data
+            MainCanvas.Refresh();                         //Refresh MainDisplay
             ctrlfrm.CtrlRefresh();                        //Refresh Control Form
             ctrlfrm.StatsRefresh();                       //Refresh stats display
         }

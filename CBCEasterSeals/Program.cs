@@ -23,8 +23,6 @@
  * Any distribution of this code (whole or partial) must be accompanied by this notice.
  */
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Forms;
 
 namespace CBCEasterSeals
