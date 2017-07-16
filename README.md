@@ -1,4 +1,4 @@
-#Title: CBC Easter Seals Telethon Telephone Monitoring System
+Title: CBC Easter Seals Telethon Telephone Monitoring System
 Author: Willem Hinzmann (whinzmann@gmail.com)
 Copyright notice:
 All code contained in this project was written by Willem Hinzmann unless otherwise specified below.
