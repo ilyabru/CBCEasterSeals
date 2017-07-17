@@ -22,6 +22,11 @@
  * 
  * Any distribution of this code (whole or partial) must be accompanied by this notice.
  */
+
+/* April 07, 2016
+ * This code was modified by Lok-Tin Leung and Ilya Brusnitsyn in order to enable
+ * the program to monitor VoIP phones using SIP protocol.
+ */
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -31,11 +36,18 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
+using SharpPcap;
 
 namespace CBCEasterSeals
 {
     public partial class ControlForm : Form
     {
+        private static SIPController SIPC = new SIPController();
+        private static Display displayForm;
+
+        private const int INTERVAL = 30;
+
+        List<Phone> allPhones;
         private static readonly string[] ImgTypes = { "*.jpg", "*.jpeg", "*.gif", "*.png" }; //this array contains the file extentions to be searched for
         private static int ImgIndex = 0;
         private static DirectoryInfo ImgDir;
@@ -45,85 +57,135 @@ namespace CBCEasterSeals
         private static Image[] SponsorImagesTmp2;
         public Image CmdCurrSponsor
         {
-            set { pbCurrSponsor.Image = value;  }
+            set { pbCurrSponsor.Image = value; }
         }
 
-        public ControlForm()
+        public ControlForm(ICaptureDevice selectedDevice)
         {
+            // create Sponsors folder if not exist
+            Directory.CreateDirectory("Sponsors");
+
             InitializeComponent();
+
+            allPhones = SIPC.allPhones;
+            displayForm = new Display(SIPC);
+            SIPC.CallStartStop += new SIPController.CallStartStopEventHandler(SIPC_CallStartStop);         
             InitializeControlGrid();
             load_imgs();
-            pbCurrSponsor.Image = Canvas.sponsor;
+            pbCurrSponsor.Image = displayForm.Sponsor.Image;
+
+            // Show main display form 
+            displayForm.Show();
+
+            // start packet monitoring
+            SIPC.StartCapture(selectedDevice);
         }
 
         private void InitializeControlGrid()
         {
-            this.ShapeContainer = new Microsoft.VisualBasic.PowerPacks.ShapeContainer();
-            this.Controls.Add(this.ShapeContainer);
-            this.lblGrid = new System.Windows.Forms.Label[30];
-            for(int i = 0; i <= 29; i++)
+            this.lblGrid = new System.Windows.Forms.Label[allPhones.Count];
+            for (int i = 0; i < allPhones.Count; i++)
             {
                 //Labels
                 this.lblGrid[i] = new System.Windows.Forms.Label();
-                this.lblGrid[i].Location = new System.Drawing.Point((15+(i*30)), 474);
+                this.lblGrid[i].Location = new System.Drawing.Point((15 + (i * 30)), 0);//old y coords: 474
                 this.lblGrid[i].Size = new System.Drawing.Size(25, 20);
                 this.lblGrid[i].Text = (i + 1).ToString();
                 this.lblGrid[i].BackColor = System.Drawing.Color.LightGreen;
                 this.lblGrid[i].TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+                lblGrid[i].DoubleClick += lblGrid_DoubleClick;
             }
 
             this.Controls.AddRange(lblGrid);
-
-            this.ShapeContainer.Location = new System.Drawing.Point(0, 0);
-            this.ShapeContainer.Size = this.ClientSize;
         }
 
-        public void CtrlRefresh() //refreshes line indicators
+        private void lblGrid_DoubleClick(object sender, EventArgs e)
         {
-            for(int i = 0; i <= 29; i++)
+            var l = (Label)sender;
+            int pIndex = (Convert.ToInt32(l.Text) - 1);
+
+            if (allPhones[pIndex].State == PhoneState.Idle)
             {
-                if (Program.MasterPhones[i] == true)
-                {
-                    this.lblGrid[i].BackColor = System.Drawing.Color.Green;
-                }
-                else
-                {
-                    this.lblGrid[i].BackColor = System.Drawing.Color.LightGreen;
-                }
+                allPhones[pIndex].State = PhoneState.Dialog;
+                this.lblGrid[pIndex].BackColor = System.Drawing.Color.LightBlue;
+                displayForm.Phones[pIndex].Image = SIPC.allPhones[pIndex].Image;
+                displayForm.IdlePhones--;
             }
-            this.CmdCurrSponsor = Canvas.sponsor;
+            else
+            {
+                allPhones[pIndex].State = PhoneState.Idle;
+                this.lblGrid[pIndex].BackColor = System.Drawing.Color.LightGreen;
+                displayForm.Phones[pIndex].Image = SIPC.allPhones[pIndex].Image;
+
+                displayForm.IdlePhones++;
+            }
+        }
+
+        private void btnPickUpAll_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < allPhones.Count; i++)
+            {
+                this.lblGrid[i].BackColor = System.Drawing.Color.LightBlue;
+                allPhones[i].State = PhoneState.Dialog;
+                displayForm.Phones[i].Image = SIPC.allPhones[i].Image;
+                displayForm.IdlePhones = 0; // Celebrate
+            }
+        }
+
+        private void btnHangUpAll_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < allPhones.Count; i++)
+            {
+                this.lblGrid[i].BackColor = System.Drawing.Color.LightGreen;
+                allPhones[i].State = PhoneState.Idle;
+                displayForm.Phones[i].Image = SIPC.allPhones[i].Image;
+                displayForm.IdlePhones = allPhones.Count;
+            }
         }
 
         private void btnExit_Click(object sender, EventArgs e)
         {
-            if(MessageBox.Show("Do you really want to quit?","Quit",MessageBoxButtons.YesNo,MessageBoxIcon.Question) == DialogResult.Yes)
+            ControlForm_FormClosing(sender, null);
+        }
+
+        private void ControlForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (MessageBox.Show("Do you really want to quit?", "Quit", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                MainDisplay.ExitFromCommand = true;
-                Application.Exit();
+                SIPC.StopCapture();
+                Environment.Exit(1);
+            }
+            else if (e != null)
+            {
+                e.Cancel = true;
             }
         }
 
         private void btnSetDefaultImg_Click(object sender, EventArgs e)
         {
-            Canvas.sponsor = global::CBCEasterSeals.Properties.Resources.es_logo;
+            //Canvas.sponsor = global::CBCEasterSeals.Properties.Resources.es_logo;
             pbSponsor.Image = global::CBCEasterSeals.Properties.Resources.es_logo;
+            pbCurrSponsor.Image = global::CBCEasterSeals.Properties.Resources.es_logo;
+            displayForm.Sponsor.Image = global::CBCEasterSeals.Properties.Resources.es_logo;
             ImgIndex = 0;
         }
 
         private void btnReloadImgs_Click(object sender, EventArgs e)
         {
             load_imgs();
+            SIPC.ReadAddressFile(SIPC.AddressFilePath);
         }
 
         private void btnSetImg_Click(object sender, EventArgs e)
         {
             try
             {
-                Canvas.sponsor = pbSponsor.Image;
+                pbCurrSponsor.Image = pbSponsor.Image;
+                displayForm.Sponsor.Image = pbSponsor.Image;
             }
             catch
             {
-                Canvas.sponsor = global::CBCEasterSeals.Properties.Resources.es_logo;
+                displayForm.Sponsor.Image = global::CBCEasterSeals.Properties.Resources.es_logo;
                 pbSponsor.Image = global::CBCEasterSeals.Properties.Resources.es_logo;
                 load_imgs();
             }
@@ -151,10 +213,11 @@ namespace CBCEasterSeals
         {
             try
             {
+                Directory.CreateDirectory("Sponsors");
                 ImgDir = new DirectoryInfo("Sponsors//");
-                
+
                 //Scans directory above for each file type and adds any found files to image array
-                foreach(String CurrFileType in ImgTypes)
+                foreach (String CurrFileType in ImgTypes)
                 {
                     ImgIndex = 0;
                     ImgInfo = ImgDir.GetFiles(CurrFileType);
@@ -187,7 +250,7 @@ namespace CBCEasterSeals
                 }
                 else
                 {
-                    Canvas.sponsor = global::CBCEasterSeals.Properties.Resources.es_logo;
+                    displayForm.Sponsor.Image = global::CBCEasterSeals.Properties.Resources.es_logo;
                     pbSponsor.Image = global::CBCEasterSeals.Properties.Resources.es_logo;
                     btnNextImg.Enabled = false;
                     btnPrevImg.Enabled = false;
@@ -196,7 +259,7 @@ namespace CBCEasterSeals
             }
             catch //disable browsing if image scan causes error
             {
-                Canvas.sponsor = global::CBCEasterSeals.Properties.Resources.es_logo;
+                displayForm.Sponsor.Image = global::CBCEasterSeals.Properties.Resources.es_logo;
                 pbSponsor.Image = global::CBCEasterSeals.Properties.Resources.es_logo;
                 btnNextImg.Enabled = false;
                 btnPrevImg.Enabled = false;
@@ -210,59 +273,46 @@ namespace CBCEasterSeals
             {
                 btnSH.Text = "Show Sponsor";
                 pbCurrSponsor.Visible = false;
-                Canvas.showSponsor = false;
+                displayForm.Sponsor.Hide();
             }
             else
             {
                 btnSH.Text = "Hide Sponsor";
                 pbCurrSponsor.Visible = true;
-                Canvas.showSponsor = true;
+                displayForm.Sponsor.Show();
             }
         }
 
-        public void StatsRefresh() //refreshes counters from data stored in stats controller
+        private void radMACMethod_CheckedChanged(object sender, EventArgs e)
         {
-            //Call counters
-            txt930C.Text = StatsController.Calls[0].ToString();
-            txt1000C.Text = StatsController.Calls[1].ToString();
-            txt1030C.Text = StatsController.Calls[2].ToString();
-            txt1100C.Text = StatsController.Calls[3].ToString();
-            txt1130C.Text = StatsController.Calls[4].ToString();
-            txt1200C.Text = StatsController.Calls[5].ToString();
-            txt1230C.Text = StatsController.Calls[6].ToString();
-            txt1300C.Text = StatsController.Calls[7].ToString();
-            txt1330C.Text = StatsController.Calls[8].ToString();
-            txt1400C.Text = StatsController.Calls[9].ToString();
-            txt1430C.Text = StatsController.Calls[10].ToString();
-            txtTotalC.Text = StatsController.Calls[11].ToString();
-            //Average call lengths
-            txt930ACL.Text = StatsController.MinSec(0);
-            txt1000ACL.Text = StatsController.MinSec(1);
-            txt1030ACL.Text = StatsController.MinSec(2);
-            txt1100ACL.Text = StatsController.MinSec(3);
-            txt1130ACL.Text = StatsController.MinSec(4);
-            txt1200ACL.Text = StatsController.MinSec(5);
-            txt1230ACL.Text = StatsController.MinSec(6);
-            txt1300ACL.Text = StatsController.MinSec(7);
-            txt1330ACL.Text = StatsController.MinSec(8);
-            txt1400ACL.Text = StatsController.MinSec(9);
-            txt1430ACL.Text = StatsController.MinSec(10);
-            txtTotalACL.Text = StatsController.MinSec(11);
-            //Calls/Min
-            txt930CM.Text = StatsController.CallsMin[0].ToString("0.0");
-            txt1000CM.Text = StatsController.CallsMin[1].ToString("0.0");
-            txt1030CM.Text = StatsController.CallsMin[2].ToString("0.0");
-            txt1100CM.Text = StatsController.CallsMin[3].ToString("0.0");
-            txt1130CM.Text = StatsController.CallsMin[4].ToString("0.0");
-            txt1200CM.Text = StatsController.CallsMin[5].ToString("0.0");
-            txt1230CM.Text = StatsController.CallsMin[6].ToString("0.0");
-            txt1300CM.Text = StatsController.CallsMin[7].ToString("0.0");
-            txt1330CM.Text = StatsController.CallsMin[8].ToString("0.0");
-            txt1400CM.Text = StatsController.CallsMin[9].ToString("0.0");
-            txt1430CM.Text = StatsController.CallsMin[10].ToString("0.0");
-            txtTotalCM.Text = StatsController.CallsMin[11].ToString("0.0");
+            SIPC.CompareMethod = 0;
         }
 
+        private void radIPMethod_CheckedChanged(object sender, EventArgs e)
+        {
+            SIPC.CompareMethod = 1;
+        }
 
+        private void SIPC_CallStartStop(object sender, SIPController.CallStartStopEventArgs e)
+        {
+            if (this.InvokeRequired)
+            {
+                SIPController.CallStartStopEventHandler d = new SIPController.CallStartStopEventHandler(SIPC_CallStartStop);
+                this.Invoke(d, new object[] { sender, e });
+                return;
+            }
+            else
+            {
+                switch (e.PhoneState)
+                {
+                    case PhoneState.Idle:
+                        lblGrid[e.Queue].BackColor = System.Drawing.Color.LightGreen;
+                        break;
+                    case PhoneState.Dialog:
+                        lblGrid[e.Queue].BackColor = System.Drawing.Color.LightBlue;
+                        break;
+                }
+            }
+        }
     }
 }
