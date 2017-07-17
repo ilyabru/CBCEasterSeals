@@ -34,11 +34,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="LJUDDotNet, Version=3.0.0.0, Culture=neutral, PublicKeyToken=9d6c109908595016">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>.\LJUDDotNet.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="PacketDotNet">
       <HintPath>..\..\..\SharpPcap-4.2.0\Release\PacketDotNet.dll</HintPath>
     </Reference>
@@ -110,10 +105,17 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="PacketDotNet.dll" />
+    <Content Include="PacketDotNet.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\ring.wav" />
-    <Content Include="SharpPcap.dll" />
+    <Content Include="SharpPcap.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="README.txt" />
+    <Content Include="wpcap.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="Resources\es_logo.png" />
     <None Include="Resources\telethon_logo.png" />
     <None Include="Resources\off.png" />
