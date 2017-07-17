@@ -22,6 +22,14 @@
  * 
  * Any distribution of this code (whole or partial) must be accompanied by this notice.
  */
+
+/* April 07, 2016
+ * This code was modified by Lok-Tin Leung and Ilya Brusnitsyn in order to enable
+ * the program to monitor VoIP phones using SIP protocol.
+ */
+ /* March 31,  2016
+  * Ilya made the display a windows form instead of a drawing being refreshed once per second.
+  */
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,20 +39,12 @@ namespace CBCEasterSeals
 {
     static class Program
     {
-        //Master phone array. Contains current status of phone lines. True = off-hook/in-use. False = on-hook/idle. Used by all child classes.
-        static private bool[] MstrPhones = new bool[30];
-        static public bool[] MasterPhones
-        {
-            get { return MstrPhones; }
-            set { MstrPhones = value; }
-        }
-
         [STAThread]
         static void Main()
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainDisplay());
+            Application.Run(new NICSelection());
         }
     }
 }
