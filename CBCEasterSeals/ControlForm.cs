@@ -107,6 +107,7 @@ namespace CBCEasterSeals
             if (allPhones[pIndex].State == PhoneState.Idle)
             {
                 allPhones[pIndex].State = PhoneState.Dialog;
+                allPhones[pIndex].StartTime = DateTime.Now;
                 this.lblGrid[pIndex].BackColor = System.Drawing.Color.LightBlue;
                 displayForm.Phones[pIndex].Image = SIPC.allPhones[pIndex].Image;
                 displayForm.IdlePhones--;
