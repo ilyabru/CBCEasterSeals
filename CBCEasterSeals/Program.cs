@@ -27,24 +27,69 @@
  * This code was modified by Lok-Tin Leung and Ilya Brusnitsyn in order to enable
  * the program to monitor VoIP phones using SIP protocol.
  */
- /* March 31,  2016
-  * Ilya made the display a windows form instead of a drawing being refreshed once per second.
-  */
+/* March 31,  2016
+ * Ilya made the display a windows form instead of a drawing being refreshed once per second.
+ */
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace CBCEasterSeals
 {
+    // needed for showing the Console
+    internal static class NativeMethods
+    {
+        [DllImport("kernel32.dll")]
+        internal static extern Boolean AllocConsole();
+    }
+
     static class Program
     {
         [STAThread]
         static void Main()
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new NICSelection());
+            string[] args = Environment.GetCommandLineArgs();
+            
+            if (args.Length <= 1) // when executing using a shortcut
+            {
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
+                Application.Run(new NICSelection());
+            }
+            else // adding arguments means we are summarizing a previous log
+            {
+                NativeMethods.AllocConsole();
+
+                try
+                {
+                    switch (args.Length)
+                    {
+                        case 2:
+                            LogSummary.Summarize(args[1]);
+                            break;
+                        case 3:
+                            if (int.TryParse(args[2], out int result))
+                            {
+                                LogSummary.Summarize(args[1], result);
+                            }
+                            else
+                            {
+                                throw new Exception("interval must be a number.\n");
+                            }
+                            break;
+                        default:
+                            throw new Exception("Too many command line arhuments");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Something went wrong during log summary process: " + ex.Message);
+                    Console.WriteLine("Usage:\nCBCEasterSeals.exe LogFileName [intervalNumber]");
+                    Console.ReadLine();
+                }
+            }
         }
     }
 }

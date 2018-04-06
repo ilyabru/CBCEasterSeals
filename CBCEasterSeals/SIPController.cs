@@ -12,6 +12,12 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Drawing;
 using System.Windows.Media;
+using log4net.Repository.Hierarchy;
+using log4net;
+using log4net.Appender;
+using System.Linq;
+
+[assembly: log4net.Config.XmlConfigurator(Watch = true)]
 
 namespace CBCEasterSeals
 {
@@ -23,7 +29,9 @@ namespace CBCEasterSeals
 
     public class SIPController
     {
-        private const int  MAXPHONES = 30;
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+        private const int MAXPHONES = 30;
 
         private string addressFilePath = "address.txt";
 
@@ -117,7 +125,7 @@ namespace CBCEasterSeals
                             {
                                 allPhones[queue].Mac = entries[0];
                                 allPhones[queue].Ip = entries[1];
-                            }                        
+                            }
                             queue++;
                         }
                     }
@@ -222,7 +230,15 @@ namespace CBCEasterSeals
         public void StopCapture()
         {
             captureThread.Abort();
-            Phone.log.Stop();
+
+            // Get filename of log
+            var rootAppender = ((Hierarchy)LogManager.GetRepository())
+                                         .Root.Appenders.OfType<FileAppender>()
+                                         .FirstOrDefault();
+
+            string filename = rootAppender != null ? rootAppender.File : string.Empty;
+
+            LogSummary.Summarize(filename);
         }
 
         public void ProcessSIPpacket(string[] packet, Phone p)
@@ -239,7 +255,7 @@ namespace CBCEasterSeals
                         p.State = PhoneState.Dialog;
 
                         e.PhoneState = p.State;
-                        e.Queue = p.Queue; 
+                        e.Queue = p.Queue;
                         OnCallStartStop(e);
                     }
                     if (packet[0].Contains("180"))
@@ -254,7 +270,9 @@ namespace CBCEasterSeals
                     {
                         p.StopTime = DateTime.Now;
                         TimeSpan duration = p.StopTime.Subtract(p.StartTime);
-                        Phone.log.Log(string.Format("{0, -10} | {1:hh:mm:ss.fff tt} | {2:hh:mm:ss.fff tt} | {3:hh\\:mm\\:ss\\.fff}", (p.Queue + 1).ToString(), p.StartTime, p.StopTime, duration));
+                        
+                        // INFO is for logging phone calls TODO: add better log filtering
+                        log.InfoFormat("{0, -10} | {1:hh:mm:ss.fff tt} | {2:hh:mm:ss.fff tt} | {3:hh\\:mm\\:ss\\.fff}", (p.Queue + 1).ToString(), p.StartTime, p.StopTime, duration);
 
                         p.State = PhoneState.Idle;
 
@@ -283,123 +301,6 @@ namespace CBCEasterSeals
                     return temp[1];
             }
             return null;
-        }
-    }
-
-    /// <summary>
-    /// Class for reference phone data.
-    /// </summary>
-    public class Phone
-    {
-        public static PacketLog log = new PacketLog();
-
-        private int queue;
-        private string ipAddress;
-        private string macAddress;
-        private PhoneState state = PhoneState.Idle;
-        private DateTime startTime = new DateTime();
-        private DateTime stopTime = new DateTime();
-        private Bitmap image = new Bitmap(global::CBCEasterSeals.Properties.Resources.on);
-
-        public int Queue
-        {
-            get { return queue; }
-        }
-        public string Ip
-        {
-            get { return ipAddress; }
-            set { ipAddress = value; }
-        }
-        public string Mac
-        {
-            get { return macAddress; }
-            set { macAddress = value; }
-        }
-
-        public bool FromTo
-        {
-            get { return FromTo; }
-
-            set { FromTo = value; }
-        }
-
-        public PhoneState State
-        {
-            get { return state; }
-            set
-            {
-                state = value;
-                switch(state)
-                {
-                    case PhoneState.Idle:
-                        image = global::CBCEasterSeals.Properties.Resources.on;
-                        break;
-                    case PhoneState.Dialog:
-                        image = global::CBCEasterSeals.Properties.Resources.off;
-                        break;
-                }
-            }
-        }
-
-        public DateTime StartTime
-        {
-            get { return startTime; }
-            set { startTime = value; }
-        }
-
-        public DateTime StopTime
-        {
-            get { return stopTime; }
-            set { stopTime = value; }
-        }
-
-        public Bitmap Image
-        {
-            get
-            {
-                return image;
-            }
-        }
-
-        public Phone(int Queue, string Mac, string Ip)
-        {
-            queue = Queue;
-            macAddress = Mac;
-            ipAddress = Ip;            
-        }
-    }
-
-    /// <summary>
-    /// Packet logging for stress testing and troubleshooting.
-    /// </summary>
-    public class PacketLog
-    {
-        private string logfilepath = "logs\\Rx_" + DateTime.Now.ToString("yyyy-MM-dd-hh.mm.ss") + ".txt";
-        private StreamWriter filelog;
-
-        public PacketLog()
-        {
-            Directory.CreateDirectory("logs");
-            filelog = new StreamWriter(logfilepath, true);
-            filelog.WriteLine("{0, -10} | {1, -15} | {2, -15} | {3}", "Phone#", "StartTime", "StopTime", "Call Duration");
-        }
-        /// <summary>
-        /// Outputs a line of text to a file.
-        /// </summary>
-        /// <param name="Line">Line of text to be output to the file.</param>
-        public void Log(string Line)
-        {
-            lock (filelog)
-            {
-                filelog.WriteLine(Line);
-            };
-        }
-        /// <summary>
-        /// Closes the file.
-        /// </summary>
-        public void Stop()
-        {
-            filelog.Close();
         }
     }
 }
