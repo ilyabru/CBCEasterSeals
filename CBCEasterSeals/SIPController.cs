@@ -258,12 +258,6 @@ namespace CBCEasterSeals
                         e.Queue = p.Queue;
                         OnCallStartStop(e);
                     }
-                    if (packet[0].Contains("180"))
-                    {
-                        ThreadStart soundThreadStart = new ThreadStart(playSound);
-                        Thread soundThread = new Thread(soundThreadStart);
-                        soundThread.Start();
-                    }
                     break;
                 case PhoneState.Dialog:
                     if (packet[0].Contains("BYE"))
@@ -283,13 +277,6 @@ namespace CBCEasterSeals
                     }
                     break;
             }
-        }
-
-        private static void playSound()
-        {
-            MediaPlayer player = new MediaPlayer();
-            player.Open(new Uri(Environment.CurrentDirectory + "//ring.wav"));
-            player.Play();
         }
 
         private static string GetCseq(string[] sipPacket)

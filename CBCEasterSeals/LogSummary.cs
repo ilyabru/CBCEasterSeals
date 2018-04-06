@@ -50,7 +50,7 @@ namespace CBCEasterSeals
                 telethonEndTime = new DateTime(lastCallTime.Year, lastCallTime.Month, lastCallTime.Day, lastCallTime.Hour, interval, 0);
 
 
-            using (StreamWriter summaryLog = new StreamWriter(("summaryLog_" + DateTime.Now.ToString("yyyy-MM-dd-hh.mm.ss") + ".txt"), true))
+            using (StreamWriter summaryLog = new StreamWriter(("./logs/summaryLog_" + DateTime.Now.ToString("yyyy-MM-dd-hh.mm.ss") + ".txt"), true))
             {
                 summaryLog.WriteLine("{0, -19} | {1, -11} | {2, -16} | {3, -16}", "Times", "Calls / Min", "Avg.Call Length", "Calls");
 
