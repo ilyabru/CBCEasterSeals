@@ -126,7 +126,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="README.txt" />
     <None Include="Resources\es_logo.png" />
     <None Include="Resources\telethon_logo.png" />
     <None Include="Resources\off.png" />
