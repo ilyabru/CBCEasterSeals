@@ -38,7 +38,7 @@ using System.Windows.Forms;
 using System.IO;
 using SharpPcap;
 
-namespace CBCEasterSeals
+namespace PhoneBoard
 {
     public partial class ControlForm : Form
     {
@@ -52,7 +52,7 @@ namespace CBCEasterSeals
         private static int ImgIndex = 0;
         private static DirectoryInfo ImgDir;
         private static FileInfo[] ImgInfo;
-        private static Image[] SponsorImages = { global::CBCEasterSeals.Properties.Resources.es_logo };
+        private static Image[] SponsorImages = { global::PhoneBoard.Properties.Resources.es_logo };
         private static Image[] SponsorImagesTmp1;
         private static Image[] SponsorImagesTmp2;
         public Image CmdCurrSponsor
@@ -165,9 +165,9 @@ namespace CBCEasterSeals
         private void btnSetDefaultImg_Click(object sender, EventArgs e)
         {
             //Canvas.sponsor = global::CBCEasterSeals.Properties.Resources.es_logo;
-            pbSponsor.Image = global::CBCEasterSeals.Properties.Resources.es_logo;
-            pbCurrSponsor.Image = global::CBCEasterSeals.Properties.Resources.es_logo;
-            displayForm.Sponsor.Image = global::CBCEasterSeals.Properties.Resources.es_logo;
+            pbSponsor.Image = global::PhoneBoard.Properties.Resources.es_logo;
+            pbCurrSponsor.Image = global::PhoneBoard.Properties.Resources.es_logo;
+            displayForm.Sponsor.Image = global::PhoneBoard.Properties.Resources.es_logo;
             ImgIndex = 0;
         }
 
@@ -186,8 +186,8 @@ namespace CBCEasterSeals
             }
             catch
             {
-                displayForm.Sponsor.Image = global::CBCEasterSeals.Properties.Resources.es_logo;
-                pbSponsor.Image = global::CBCEasterSeals.Properties.Resources.es_logo;
+                displayForm.Sponsor.Image = global::PhoneBoard.Properties.Resources.es_logo;
+                pbSponsor.Image = global::PhoneBoard.Properties.Resources.es_logo;
                 load_imgs();
             }
         }
@@ -251,8 +251,8 @@ namespace CBCEasterSeals
                 }
                 else
                 {
-                    displayForm.Sponsor.Image = global::CBCEasterSeals.Properties.Resources.es_logo;
-                    pbSponsor.Image = global::CBCEasterSeals.Properties.Resources.es_logo;
+                    displayForm.Sponsor.Image = global::PhoneBoard.Properties.Resources.es_logo;
+                    pbSponsor.Image = global::PhoneBoard.Properties.Resources.es_logo;
                     btnNextImg.Enabled = false;
                     btnPrevImg.Enabled = false;
                     btnSetImg.Enabled = false;
@@ -260,8 +260,8 @@ namespace CBCEasterSeals
             }
             catch //disable browsing if image scan causes error
             {
-                displayForm.Sponsor.Image = global::CBCEasterSeals.Properties.Resources.es_logo;
-                pbSponsor.Image = global::CBCEasterSeals.Properties.Resources.es_logo;
+                displayForm.Sponsor.Image = global::PhoneBoard.Properties.Resources.es_logo;
+                pbSponsor.Image = global::PhoneBoard.Properties.Resources.es_logo;
                 btnNextImg.Enabled = false;
                 btnPrevImg.Enabled = false;
                 btnSetImg.Enabled = false;

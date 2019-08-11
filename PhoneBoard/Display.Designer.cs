@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace CBCEasterSeals
+namespace PhoneBoard
 {
     partial class Display
     {
@@ -45,7 +45,7 @@ namespace CBCEasterSeals
             // logo
             // 
             this.logo.BackColor = System.Drawing.Color.Transparent;
-            this.logo.Image = global::CBCEasterSeals.Properties.Resources.telethon_logo;
+            this.logo.Image = global::PhoneBoard.Properties.Resources.telethon_logo;
             this.logo.Location = new System.Drawing.Point(220, 40);
             this.logo.Name = "logo";
             this.logo.Size = new System.Drawing.Size(482, 217);
@@ -56,7 +56,7 @@ namespace CBCEasterSeals
             // sponsor
             // 
             this.sponsor.BackColor = System.Drawing.Color.Transparent;
-            this.sponsor.Image = global::CBCEasterSeals.Properties.Resources.es_logo;
+            this.sponsor.Image = global::PhoneBoard.Properties.Resources.es_logo;
             this.sponsor.Location = new System.Drawing.Point(1218, 40);
             this.sponsor.Name = "sponsor";
             this.sponsor.Size = new System.Drawing.Size(482, 217);
@@ -123,7 +123,7 @@ namespace CBCEasterSeals
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.DodgerBlue;
-            this.BackgroundImage = global::CBCEasterSeals.Properties.Resources.bg;
+            this.BackgroundImage = global::PhoneBoard.Properties.Resources.bg;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.ClientSize = new System.Drawing.Size(1920, 1080);
             this.Controls.Add(this.lblAvailableText);

@@ -7,7 +7,7 @@ using System.Windows.Forms;
 using SharpPcap;
 using System.Collections.Generic;
 
-namespace CBCEasterSeals
+namespace PhoneBoard
 {
     public partial class NICSelection : Form
     {

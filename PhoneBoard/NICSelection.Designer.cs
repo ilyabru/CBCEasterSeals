@@ -1,4 +1,4 @@
-﻿namespace CBCEasterSeals
+﻿namespace PhoneBoard
 {
     partial class NICSelection
     {

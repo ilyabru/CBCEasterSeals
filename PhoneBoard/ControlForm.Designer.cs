@@ -22,7 +22,7 @@
  * 
  * Any distribution of this code (whole or partial) must be accompanied by this notice.
  */
-namespace CBCEasterSeals
+namespace PhoneBoard
 {
     partial class ControlForm
     {
@@ -228,9 +228,9 @@ namespace CBCEasterSeals
             // 
             // pbCurrSponsor
             // 
-            this.pbCurrSponsor.ErrorImage = global::CBCEasterSeals.Properties.Resources.es_logo;
-            this.pbCurrSponsor.Image = global::CBCEasterSeals.Properties.Resources.es_logo;
-            this.pbCurrSponsor.InitialImage = global::CBCEasterSeals.Properties.Resources.es_logo;
+            this.pbCurrSponsor.ErrorImage = global::PhoneBoard.Properties.Resources.es_logo;
+            this.pbCurrSponsor.Image = global::PhoneBoard.Properties.Resources.es_logo;
+            this.pbCurrSponsor.InitialImage = global::PhoneBoard.Properties.Resources.es_logo;
             this.pbCurrSponsor.Location = new System.Drawing.Point(666, 157);
             this.pbCurrSponsor.Margin = new System.Windows.Forms.Padding(4);
             this.pbCurrSponsor.Name = "pbCurrSponsor";
@@ -241,9 +241,9 @@ namespace CBCEasterSeals
             // 
             // pbSponsor
             // 
-            this.pbSponsor.ErrorImage = global::CBCEasterSeals.Properties.Resources.es_logo;
-            this.pbSponsor.Image = global::CBCEasterSeals.Properties.Resources.es_logo;
-            this.pbSponsor.InitialImage = global::CBCEasterSeals.Properties.Resources.es_logo;
+            this.pbSponsor.ErrorImage = global::PhoneBoard.Properties.Resources.es_logo;
+            this.pbSponsor.Image = global::PhoneBoard.Properties.Resources.es_logo;
+            this.pbSponsor.InitialImage = global::PhoneBoard.Properties.Resources.es_logo;
             this.pbSponsor.Location = new System.Drawing.Point(15, 106);
             this.pbSponsor.Margin = new System.Windows.Forms.Padding(4);
             this.pbSponsor.Name = "pbSponsor";

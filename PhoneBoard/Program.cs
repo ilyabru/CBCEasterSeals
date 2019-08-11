@@ -36,7 +36,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
-namespace CBCEasterSeals
+namespace PhoneBoard
 {
     // needed for showing the Console
     internal static class NativeMethods

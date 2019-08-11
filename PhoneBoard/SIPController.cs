@@ -19,7 +19,7 @@ using System.Linq;
 
 [assembly: log4net.Config.XmlConfigurator(Watch = true)]
 
-namespace CBCEasterSeals
+namespace PhoneBoard
 {
     public enum PhoneState
     {

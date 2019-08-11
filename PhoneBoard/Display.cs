@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace CBCEasterSeals
+namespace PhoneBoard
 {
     public partial class Display : Form
     {

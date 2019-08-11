@@ -8,8 +8,8 @@
     <ProjectGuid>{33C6994B-CDC1-41B5-9C7A-DC1FB740E37E}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CBCEasterSeals</RootNamespace>
-    <AssemblyName>CBCEasterSeals</AssemblyName>
+    <RootNamespace>PhoneBoard</RootNamespace>
+    <AssemblyName>PhoneBoard</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CBCEasterSeals
+namespace PhoneBoard
 {
     public class Phone
     {
@@ -15,7 +15,7 @@ namespace CBCEasterSeals
         private PhoneState state = PhoneState.Idle;
         private DateTime startTime = new DateTime();
         private DateTime stopTime = new DateTime();
-        private Bitmap image = new Bitmap(global::CBCEasterSeals.Properties.Resources.on);
+        private Bitmap image = new Bitmap(global::PhoneBoard.Properties.Resources.on);
 
         public int Queue
         {
@@ -47,10 +47,10 @@ namespace CBCEasterSeals
                 switch (state)
                 {
                     case PhoneState.Idle:
-                        image = global::CBCEasterSeals.Properties.Resources.on;
+                        image = global::PhoneBoard.Properties.Resources.on;
                         break;
                     case PhoneState.Dialog:
-                        image = global::CBCEasterSeals.Properties.Resources.off;
+                        image = global::PhoneBoard.Properties.Resources.off;
                         break;
                 }
             }
