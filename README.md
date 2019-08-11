@@ -1,5 +1,9 @@
 # CBC Easter Seals Phone Board
 
+Source code for the Easter Seals Telethon Phone Board. This Windows Forms app displays VoIP phones are picked up or put down. The Easter Seals telethon is an annual charity event which is dedicated to raising awareness and funds for kids with physical disabilities.
+
+![image](Docs/ScreenshotESPB.jpg)
+
 ## Operating Instructions
 
 Running the program with a fresh build:
