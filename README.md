@@ -1,6 +1,8 @@
 # CBC Easter Seals Phone Board
 
-Source code for the Easter Seals Telethon Phone Board. This Windows Forms app displays VoIP phones are picked up or put down. The Easter Seals telethon is an annual charity event which is dedicated to raising awareness and funds for kids with physical disabilities.
+Source code for the Easter Seals Telethon Phone Board. This Windows Forms app displays when VoIP phones are picked up or put down. This is achieved by sniffing the VoIP server's network switch for specific Session Initiation Protocol's (SIP) packets.
+
+The Easter Seals telethon is an annual charity event which is dedicated to raising awareness and funds for kids with physical disabilities.
 
 ![image](Docs/ScreenshotESPB.jpg)
 
@@ -9,7 +11,7 @@ Source code for the Easter Seals Telethon Phone Board. This Windows Forms app di
 Running the program with a fresh build:
 
 1. Connect an ethernet cable to the switch port that is monitoring the server port on the switch. Switched Port Analyzer (SPAN) can be used to monitor a server port on a Cisco Switch.
-2. Create a text file called address.txt in the root directory (same directory as the CBCEasterSeals.exe file). If you run the program without address.txt, the file will be generated and the program will close. Here is an example of the address.txt contents:
+2. Create a text file called address.txt in the root directory (same directory as the CBCEasterSeals.exe file). If you run the program without address.txt present, the file will be auto-generated and the program will close. Here is an example of the address.txt contents:
 ```
 #MAC address and ip address of each phone
 C47295A8773C,192.168.1.2
@@ -30,11 +32,11 @@ Please Note:
 * **Ending comma after the MAC address is required**
 * Using IP address is not recommended since it often changes due to DHCP.
 * Maximum number of phones is 30 and the layout of the phones is based on the Easter Seals Telethon Toronto setup.
-* A comment can be written by puttign a # before your comment text
+* A comment can be written by putting a # before your comment text
 
 3. After configuring address.txt, restart the program. 
 4. Select the network adapter that is connected to the switch and hit ok, you should now see the visual representation of the phones on the main screen.
-5. You can  update address.txt during runtime. To do so, write down your changes and save the file. Then in the control panel, click the "Reload Images update address.txt"  button to apply changes.
+5. You can update address.txt during runtime. To do so, write down your changes and save the file. Then in the control panel, click the "Reload Images update address.txt" button to apply changes.
 
 ### Using the Control Panel
 
@@ -50,13 +52,26 @@ To display a sponsor image on the main screen:
 
 1. Find or create a Sponsors folder in the root directory.
 2. Add sponsor images to the Sponsors folder.
-3. Using the control panel you can preview, hide, or set the sponsor image. Alternatively you can show the Easter Seals logo.
+3. Using the control panel you can preview, hide, or set the sponsor image. Alternatively, you can show the Easter Seals logo.
 
 ### Logging
 
-After exiting the application gracefully a log file will be generated in the logs folder. The logs show when and which phone was picked up and put down.
+After exiting the application gracefully, a log file will be generated in the logs folder. The logs show when and which phone was picked up and put down.
 
 A summaryLog_\{CurrentDateTime\}.txt will also be generated containing a report of call data.
+
+## Project History
+
+<dl>
+    <dt>Pre-2013</dt>
+    <dd>Two Seneca students create the original phone monitoring system. This version used a "light wheel" design. Landline phones were monitored by reading voltage spikes.</dd>
+    <dt>2013</dt>
+    <dd>whinzmann modernises the phone board.</dd>
+    <dt>2016</dt>
+    <dd>Easter Seals Telethon transitions from landline phones to VoIP. I contributed to recoding the new phone monitoring logic.</dd>
+    <dt>2017-Now</dt>
+    <dd>I continue to support the project.</dd>
+</dl>
 
 ## Original README Contents
 
